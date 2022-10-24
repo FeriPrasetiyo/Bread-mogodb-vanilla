@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bread</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link rel="stylesheet" href="../public/stylesheets/style.css">
+</head>
+
+<body>
+  <div class="container-fluit" style="padding: 1rem;">
+    <div class="card">
+      <div class="card-header">
+        <h1>Bread</h1>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <form action="" method="get">
+              <div class="card">
+                <div class="card-body">
+                  <!-- String -->
+                  <div class="row">
+                    <div class="col-2">
+                      <label for="string" class="visually-hidden">string</label>
+                      <input type="text" readonly class="form-control-plaintext" id="string" value="String">
+                    </div>
+                    <div class="col-10">
+                      <div class="col-auto">
+                        <label for="string" class="visually-hidden">string</label>
+                        <input type="text" class="form-control" id="string" placeholder="string">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Akhir String -->
+                  <!-- Integer -->
+                  <div class="row">
+                    <div class="col-2">
+                      <label for="integer" class="visually-hidden">integer</label>
+                      <input type="text" readonly class="form-control-plaintext" id="integer" value="Integer">
+                    </div>
+                    <div class="col-10">
+                      <div class="col-auto">
+                        <label for="integer" class="visually-hidden">interger</label>
+                        <input type="number" class="form-control" id="integer" placeholder="integer">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Akhir integer -->
+                  <!-- awal float -->
+                  <div class="row">
+                    <div class="col-2">
+                      <label for="float" class="visually-hidden">float</label>
+                      <input type="text" readonly class="form-control-plaintext" id="float" value="Float">
+                    </div>
+                    <div class="col-10">
+                      <div class="col-auto">
+                        <label for="float" class="visually-hidden">float</label>
+                        <input type="number" class="form-control" id="float" placeholder="float" step="0.005">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- akhir float -->
+                  <!-- awal date -->
+                  <div class="row">
+                    <div class="col-2">
+                      <label for="date" class="visually-hidden">date</label>
+                      <input type="text" readonly class="form-control-plaintext" id="date" value="Date">
+                    </div>
+                    <div class="col-10">
+                      <div class="col-auto">
+                        <label for="date" class="visually-hidden">date</label>
+                        <input type="date" class="form-control" id="date" placeholder="date">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- akhir date -->
+                  <!-- awal Boolean -->
+                  <div class="row">
+                    <div class="col-2">
+                      <label for="Boolean" class="visually-hidden">Boolean</label>
+                      <input type="text" readonly class="form-control-plaintext" id="Boolean" value="Boolean">
+                    </div>
+                    <div class="col-10">
+                      <select class="form-select" aria-label="Default select example">
+                        <option selected disabled>Pilih</option>
+                        <option value="1">True</option>
+                        <option value="2">false</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-primary">Add</button>
+                  <button type="button" class="btn btn-danger">Reset</button>
+            </form>
+            <!-- Akhir Boolean -->
+            <!-- botom -->
+            <!-- akhir boolean -->
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <form action="" method="">
+              <div class="row">
+                <div class="col-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                      String
+                    </label>
+                  </div>
+                </div>
+                <div class="col-10">
+                  <div class="col-auto">
+                    <label for="string" class="visually-hidden">string</label>
+                    <input type="text" class="form-control" id="string" placeholder="string">
+                  </div>
+                </div>
+              </div>
+              <!-- akhir string -->
+              <!-- integer -->
+              <div class="row">
+                <div class="col-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                      Integer
+                    </label>
+                  </div>
+                </div>
+                <div class="col-10">
+                  <div class="col-auto">
+                    <label for="integer" class="visually-hidden">integer</label>
+                    <input type="number" class="form-control" id="integer" placeholder="integer">
+                  </div>
+                </div>
+              </div>
+              <!-- akhir integer -->
+              <!-- float -->
+              <div class="row">
+                <div class="col-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                      Float
+                    </label>
+                  </div>
+                </div>
+                <div class="col-10">
+                  <div class="col-auto">
+                    <label for="integer" class="visually-hidden">integer</label>
+                    <input type="number" class="form-control" id="integer" placeholder="integer" step="0.005">
+                  </div>
+                </div>
+              </div>
+              <!-- akhir float -->
+              <!-- awal date -->
+              <div class="row">
+                <div class="col-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                      Date
+                    </label>
+                  </div>
+                </div>
+                <div class="col-5">
+                  <div class="col-auto">
+                    <label for="date" class="visually-hidden">integer</label>
+                    <input type="date" class="form-control" id="integer" placeholder="integer">
+                  </div>
+                </div>
+                <div class="col-5">
+                  <div class="col-auto">
+                    <label for="date" class="visually-hidden">integer</label>
+                    <input type="date" class="form-control" id="integer" placeholder="integer">
+                  </div>
+                </div>
+              </div>
+              <!-- akhir date -->
+              <!-- boolean -->
+              <div class="row">
+                <div class="col-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <label class="form-check-label" for="flexCheckChecked">
+                      Boolean
+                    </label>
+                  </div>
+                </div>
+                <div class="col-10">
+                  <select class="form-select" aria-label="Default select example">
+                    <option selected disabled>Pilih</option>
+                    <option value="1">True</option>
+                    <option value="2">false</option>
+                  </select>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary">Add</button>
+              <button type="button" class="btn btn-danger">Reset</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-muted">
+  </div>
+  <div class="card">
+    <h5 class="card-header">Table</h5>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">String</th>
+            <th scope="col">Integer</th>
+            <th scope="col">Float</th>
+            <th scope="col">Date</th>
+            <th scope="col">Boolean</th>
+          </tr>
+        </thead>
+        <tbody id="body-users">
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    let idEdit = null;
+    var params = {
+      display: 3,
+      page: 1
+    }
+    const readData = () => {
+      fetch(`http://localhost:3000/users?`).then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      }).then((response) => {
+        params = { ...params, totalPages: response.totalPages }
+        console.log('dalam', params)
+        let html = ''
+        let offset = (parseInt(params.page) - 1) * params.display
+        response.data.forEach((item, index) => {
+          html += `
+            <tr>
+              <td>${item._id}</td>
+              <td>${item.strings}</td>
+              <td>${item.integers}</td>
+              <td>${item.floats}</td>
+              <td>${moment(item.dates).format('DD/MM/YYYY')}</td>
+              <td>${item.booleans}</td>
+              <td  class="text-center">
+                <button type="button" class="btn btn-success" onclick='editData(${JSON.stringify(item)})'><i
+                                        class="fa-solid fa-pencil"></i></button>
+                <button type="button" class="btn btn-danger" onclick="removeData('${item._id}')"><i
+                                        class="fa-solid fa-trash"></i></button>
+              </td>
+            </tr>
+            `
+        })
+        document.getElementById('body-users').innerHTML = html
+        pagination();
+      });
+    };
+  </script>
+</body>
+
+</html>
