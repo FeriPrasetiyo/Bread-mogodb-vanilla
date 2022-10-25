@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const { MongoClient } = require("mongodb");
+const cors = require('cors')
 
 // Replace the uri string with your connection string.
 const uri = "mongodb://127.0.0.1:27017";
@@ -15,7 +16,7 @@ const dbName = "datadb"
 async function main() {
   try {
     await client.connect();
-    const db = client.db(dbName);
+    const db = client.db(dbName);3000
     // const db = database.collection('users');
 
     // Query for a movie that has the title 'Back to the Future'
@@ -36,6 +37,7 @@ async function main() {
     app.use(express.urlencoded({ extended: false }));
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, 'public')));
+    app.use(cors())
 
     app.use('/', indexRouter);
     app.use('/users', usersRouter);
@@ -47,7 +49,7 @@ async function main() {
      * Get port from environment and store in Express.
      */
 
-    var port = normalizePort(process.env.PORT || '3000');
+    var port = normalizePort(process.env.PORT || '3001');
     app.set('port', port);
 
     /**

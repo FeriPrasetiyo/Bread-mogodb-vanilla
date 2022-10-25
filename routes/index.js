@@ -10,9 +10,8 @@ module.exports = function (db) {
     try {
       const page = req.query.page || 1;
       const limit = 3;
-      const offset = limit = 'all' ? 0 : (page - 1) * limit;
+      const offset = (page - 1) * limit;
       const wheres = {};
-      // const filter = `&idCheck=${req.query.idCheck}&id=${req.query.id}&stringCheck=${req.query.stringCheck}&string=${req.query.string}&integerCheck=${req.query.integerCheck}&integer=${req.query.integer}&floatCheck=${req.query.floatCheck}&float=${req.query.float}&dateCheck=${req.query.dateCheck}&startDate=${req.query.startDate}&endDate=${req.query.endDate}&booleanCheck=${req.query.booleanCheck}&boolean=${req.query.boolean}`;
       const sortMongo = {}
       let sortBy = req.query.sortBy || "string"
       let sortMode = req.query.sortMode || "asc"
@@ -55,9 +54,9 @@ module.exports = function (db) {
       var total = result.length;
       const pages = Math.ceil(total / limit);
       const data = await db.collection("users").find(wheres).skip(offset).limit(limit).sort(sortMongo).toArray()
-      res.status(201).json(data, { success: true })
+      res.json({ success: true, data })
     } catch (err) {
-      res.status(404).json(err, { success: false })
+      res.json(err, { success: false })
     }
   });
 
@@ -71,9 +70,9 @@ module.exports = function (db) {
         booleans: JSON.parse(req.body.boolean),
       };
       const data = await db.collection("users").insertOne(myobj);
-      res.status(201).json(data, { success: true });
+      res.json({ success: true, data });
     } catch (err) {
-      res.status(404).json(err, { success: false });
+      res.json(err, { success: false });
     }
   });
 
@@ -82,9 +81,9 @@ module.exports = function (db) {
       const data = await db
         .collection("users")
         .deleteOne({ '_id': ObjectId(`${req.params.id}`) });
-      res.status(201).json(data, { success: true });
+      res.json(data, { success: true });
     } catch (err) {
-      res.status(404).json(err, { success: false });
+      res.json(err, { success: false });
     }
   });
 
@@ -102,9 +101,9 @@ module.exports = function (db) {
         { "_id": ObjectId(`${req.params.id}`) },
         { $set: myobj }
       )
-      res.status(201).json(update, { success: true });
+      res.json({ success: true, update });
     } catch (err) {
-      res.status(404).json(err, { success: false });
+      res.json(err, { success: false });
     }
   });
 
