@@ -81,7 +81,7 @@ module.exports = function (db) {
       const data = await db
         .collection("users")
         .deleteOne({ '_id': ObjectId(`${req.params.id}`) });
-      res.json(data, { success: true });
+      res.json({ success: true, data });
     } catch (err) {
       res.json(err, { success: false });
     }

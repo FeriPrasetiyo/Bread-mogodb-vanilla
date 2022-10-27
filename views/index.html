@@ -8,6 +8,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   <link href="/fontawesome/css/all.css" rel="stylesheet">
+  <script src="./moment.min.js"></script>
+  <!-- <script src="/jquery-3.6.1.min.js"></script> -->
   <link rel="shortcut icon" href="#">
 </head>
 
@@ -90,8 +92,8 @@
                     <div class="col-10">
                       <select class="form-select" aria-label="Default select example" id="boolean" name="boolean">
                         <option selected disabled>Pilih</option>
-                        <option value="1">True</option>
-                        <option value="2">false</option>
+                        <option value=true>True</option>
+                        <option value=false>false</option>
                       </select>
                     </div>
                   </div>
@@ -236,12 +238,27 @@
 
         </tbody>
       </table>
+      <nav aria-label="...">
+        <ul class="pagination">
+          <li class="page-item disabled">
+            <a class="page-link">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
   <script>
     let idEdit = null;
-    var params = {
-      display: 3,
+    let params = {
+      display: 5,
       page: 1
     }
     const readData = () => {
@@ -254,15 +271,15 @@
           data.data.forEach((item, index) => {
             html += `
             <tr>
-              <td>${item._id}</td>
+              <td>${index + 1}</td>
               <td>${item.strings}</td>
               <td>${item.integers}</td>
               <td>${item.floats}</td>
-              <td>${item.dates}</td>
+              <td>${moment(item.dates).format('YYYY-MM-DD')}</td>
               <td>${item.booleans}</td>
               <td>
-                <button type="button" class="btn btn-primary" onclick='editData(${JSON.stringify(item)})'><i class="fa-solid fa-pen-to-square"></i></button>
-                <button type="button" class="btn btn-danger" onclick="removeData('${item._id}')"><i class="fa-solid fa-trash"></i></button>
+                <button type="button" class='btn btn-primary' onclick='editData(${JSON.stringify(item)})'><i class="fa-solid fa-pen-to-square"></i></button>
+                <button type="button" class='btn btn-danger' onclick="removeData('${item._id}')"><i class="fa-solid fa-trash"></i></button>
               </td>
           </tr>
             `
@@ -274,6 +291,7 @@
           alert('err tu')
         })
     }
+    // add
     const saveData = () => {
       const string = document.getElementById('string').value
       const integer = document.getElementById('integer').value
@@ -293,12 +311,8 @@
           .then((data) => {
             readData()
           })
-          .catch((error) => {
-            alert('tambah gagal')
-            console.error('Error:', error);
-          });
       } else {
-        fetch(`http://localhost:3000/users/${idEdit}`, {
+        fetch(`http://localhost:3001/${idEdit}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -314,9 +328,11 @@
       document.getElementById('float').value = ''
       document.getElementById('date').value = ''
       document.getElementById('boolean').value = ''
+      return false
     }
+    // delete
     const removeData = (id) => {
-      fetch(`http://localhost:3000/users/${id}`, {
+      fetch(`http://localhost:3001/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -324,6 +340,16 @@
       }).then((response) => response.json()).then((data) => {
         readData()
       })
+    }
+    const editData = (breads) => {
+
+      idEdit = breads._id
+      document.getElementById('string').value = breads.strings
+      document.getElementById('integer').value = breads.integers
+      document.getElementById('float').value = breads.floats
+      document.getElementById('date').value = moment(breads.dates).format('YYYY-MM-DD')
+      document.getElementById('boolean').value = breads.booleans
+
     }
     document.getElementById("form-users").addEventListener("submit", function (event) {
       event.preventDefault()
