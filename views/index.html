@@ -19,7 +19,7 @@
       <div class="card-header">
         <h1>Bread</h1>
       </div>
-      <input type="hidden" name="page" value="1">
+      <input type="hidden" name="halaman" value="1">
       <div class="card-body">
         <div class="row">
           <div class="col-sm-6">
@@ -239,36 +239,33 @@
         </tbody>
       </table>
       <nav aria-label="...">
-        <ul class="pagination">
-          <li class="page-item disabled">
-            <a class="page-link">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item active" aria-current="page">
-            <a class="page-link" href="#">2</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
+        <div class="row">
+          <div class="col-md-10">
+            <nav aria-label="Page navigation" id="pagination">
+
+            </nav>
+          </div>
+        </div>
       </nav>
     </div>
   </div>
   <script>
     let idEdit = null;
-    let params = {
-      display: 5,
-      page: 1
+    var params = {
+      page: 1,
+      sortBy: 'strings',
+      sortMode: 'asc'
     }
     const readData = () => {
-      fetch('http://localhost:3001/')
+      fetch(`http://localhost:3001/?${new URLSearchParams(params).toString()}`)
         .then((response) => {
           return response.json()
         })
-        .then((data) => {
+        .then((res) => {
+          const { data, pages, page } = res
+          params = { ...params, pages }
           let html = ""
-          data.data.forEach((item, index) => {
+          data.forEach((item, index) => {
             html += `
             <tr>
               <td>${index + 1}</td>
@@ -285,9 +282,9 @@
             `
           });
           document.getElementById('table-users').innerHTML = html
+          pagination()
         })
         .catch((err) => {
-          console.log(err)
           alert('err tu')
         })
     }
@@ -351,12 +348,96 @@
       document.getElementById('boolean').value = breads.booleans
 
     }
+    const pagination = () => {
+      let pagination = `<ul class="pagination">
+                               <li class="page-item${params.page == 1 ? ' disabled' : ''}">
+                                 <a class="page-link" id="halaman" href="javascript:void(0)" onclick="changePage(${parseInt(params.page) - 1})" aria-label="Previous">
+                                  <span aria-hidden="true">&laquo;</span>
+                                 </a>
+                             </li>`
+      for (let i = 1; i <= params.pages; i++) {
+        pagination += `
+        <li class="page-item${i == params.page ? ' active' : ''}"><a class="page-link" id="halaman" href="javascript:void(0)" id="angka" onclick="changePage(${i})">${i}</a></li>`
+      }
+      pagination += `<li class="page-item${params.page == params.pages ? ' disabled' : ''}">
+            <a class="page-link" href="javascript:void(0)" onclick="changePage(${parseInt(params.page) + 1})" id="halaman" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>`
+      document.getElementById('pagination').innerHTML = pagination
+    }
+
+    function changePage(page) {
+      params = { ...params, page }
+      readData()
+      return false
+    }
     document.getElementById("form-users").addEventListener("submit", function (event) {
       event.preventDefault()
       saveData()
     });
+    function changePage(page) {
+      params = { ...params, page }
+      console.log(params)
+      readData()
+      return false
+    }
+
+    function resetData() {
+      document.getElementById('form-search').reset()
+      readData()
+    }
 
 
+    document.getElementById('form-search').addEventListener('submit', (event) => {
+      event.preventDefault()
+      const page = 1
+      const string = document.getElementById('searchString').value
+      const integer = document.getElementById('searchInteger').value
+      const float = document.getElementById('searchFloat').value
+      const startDate = document.getElementById('searchStartDate').value
+      const endDate = document.getElementById('searchEndDate').value
+      const boolean = document.getElementById('searchBoolean').value
+      params = { ...params, string, integer, float, startDate, endDate, boolean, page }
+      readData()
+    })
+    function sortTableByColumn(table, column, asc = true) {
+      const dirModifier = asc ? 1 : -1;
+      const tBody = table.tBodies[0];
+      const rows = Array.from(tBody.querySelectorAll("tr"));
+
+      // Sort each row
+      const sortedRows = rows.sort((a, b) => {
+        const aColText = a.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+        const bColText = b.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+
+        return aColText > bColText ? (1 * dirModifier) : (-1 * dirModifier);
+      });
+
+      // Remove all existing TRs from the table
+      while (tBody.firstChild) {
+        tBody.removeChild(tBody.firstChild);
+      }
+
+      // Re-add the newly sorted rows
+      tBody.append(...sortedRows);
+
+      // Remember how the column is currently sorted
+      table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
+      table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-asc", asc);
+      table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-desc", !asc);
+    }
+
+    document.querySelectorAll(".table-sortable th").forEach(headerCell => {
+      headerCell.addEventListener("click", () => {
+        const tableElement = headerCell.parentElement.parentElement.parentElement;
+        const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
+        const currentIsAscending = headerCell.classList.contains("th-sort-asc");
+
+        sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
+      });
+    });
 
     readData()
   </script>

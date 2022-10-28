@@ -8,16 +8,17 @@ var { ObjectId } = require('mongodb');
 module.exports = function (db) {
   router.get("/", async function (req, res) {
     try {
+
       const page = req.query.page || 1;
       const limit = 3;
-      const offset = (page - 1) * limit;
+      const offset = limit == 'all' ? 0 : (page - 1) * limit;
       const wheres = {};
-      const sortMongo = {}
-      let sortBy = req.query.sortBy || "string"
+      const sortMongo = {};
+
+      let sortBy = req.query.sortBy || "strings"
       let sortMode = req.query.sortMode || "asc"
 
       sortMongo[sortBy] = sortMode == "asc" ? 1 : -1;
-
 
       if (req.query.string && req.query.stringCheck == "on") {
         wheres["strings"] = new RegExp(`${req.query.string}`, "i");
@@ -48,13 +49,16 @@ module.exports = function (db) {
         wheres["booleans"] = JSON.parse(req.query.boolean);
       }
 
-      const result = await db.collection("users")
-        .find(wheres)
-        .toArray()
+      const result = await db.collection("users").find(wheres).toArray()
       var total = result.length;
       const pages = Math.ceil(total / limit);
       const data = await db.collection("users").find(wheres).skip(offset).limit(limit).sort(sortMongo).toArray()
-      res.json({ success: true, data })
+      res.json({
+        success: true,
+        data,
+        pages,
+        limit
+      })
     } catch (err) {
       res.json(err, { success: false })
     }
