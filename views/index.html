@@ -124,7 +124,7 @@
                 <div class="col-10">
                   <div class="col-auto">
                     <label for="string" class="visually-hidden">string</label>
-                    <input type="text" class="form-control" id="string" placeholder="string">
+                    <input type="text" class="form-control" id="searchString" name="searchString" placeholder="string">
                   </div>
                 </div>
               </div>
@@ -142,7 +142,8 @@
                 <div class="col-10">
                   <div class="col-auto">
                     <label for="integer" class="visually-hidden">integer</label>
-                    <input type="number" class="form-control" id="integer" placeholder="integer">
+                    <input type="number" class="form-control" id="searchInteger" name="searchInteger"
+                      placeholder="integer">
                   </div>
                 </div>
               </div>
@@ -159,8 +160,9 @@
                 </div>
                 <div class="col-10">
                   <div class="col-auto">
-                    <label for="integer" class="visually-hidden">integer</label>
-                    <input type="number" class="form-control" id="integer" placeholder="integer" step="0.005">
+                    <label for="integer" class="visually-hidden">float</label>
+                    <input type="number" class="form-control" id="searchFloat" name="searchFloat" placeholder="Float"
+                      step="0.005">
                   </div>
                 </div>
               </div>
@@ -177,14 +179,15 @@
                 </div>
                 <div class="col-5">
                   <div class="col-auto">
-                    <label for="date" class="visually-hidden">integer</label>
-                    <input type="date" class="form-control" id="integer" placeholder="integer">
+                    <label for="date" class="visually-hidden">startDate</label>
+                    <input type="date" class="form-control" id="searchStartDate" name="searchStartDate"
+                      placeholder="date">
                   </div>
                 </div>
                 <div class="col-5">
                   <div class="col-auto">
-                    <label for="date" class="visually-hidden">integer</label>
-                    <input type="date" class="form-control" id="integer" placeholder="integer">
+                    <label for="date" class="visually-hidden">endDate</label>
+                    <input type="date" class="form-control" id="searchEndDate" name="searchEndDate" placeholder="date">
                   </div>
                 </div>
               </div>
@@ -200,16 +203,18 @@
                   </div>
                 </div>
                 <div class="col-10">
-                  <select class="form-select" aria-label="Default select example">
-                    <option selected disabled>Pilih</option>
-                    <option value="1">True</option>
-                    <option value="2">false</option>
+                  <select class="form-select" id="searchBoolean" name="searchBoolean"
+                    aria-label="Default select example">
+                    <option value="">Pilih</option>
+                    <option value=true>True</option>
+                    <option value=false>false</option>
                   </select>
                 </div>
               </div>
-              <button type="" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
+              <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i></button>
               <a href="/">
-                <button type="reset" class="btn btn-danger"><i class="fa-solid fa-xmark"></i></button>
+                <button type="reset" class="btn btn-danger" onclick="resetData()"><i
+                    class="fa-solid fa-xmark"></i></button>
               </a>
             </form>
           </div>
@@ -222,8 +227,8 @@
   <div class="card">
     <h5 class="card-header">Table</h5>
     <div class="card-body">
-      <table class="table">
-        <thead>
+      <table class="table table-sortable   table-striped card-body">
+        <thead class="thead">
           <tr>
             <th scope="col" class="no-sort">ID</th>
             <th scope="col">String</th>
@@ -262,13 +267,14 @@
           return response.json()
         })
         .then((res) => {
-          const { data, pages, page } = res
+          const { data, pages } = res
           params = { ...params, pages }
           let html = ""
+          let offset = (parseInt(params.page) - 1) * params.pages
           data.forEach((item, index) => {
             html += `
             <tr>
-              <td>${index + 1}</td>
+              <td>${index + 1 + offset}</td>
               <td>${item.strings}</td>
               <td>${item.integers}</td>
               <td>${item.floats}</td>
@@ -373,21 +379,16 @@
       readData()
       return false
     }
-    document.getElementById("form-users").addEventListener("submit", function (event) {
-      event.preventDefault()
-      saveData()
-    });
-    function changePage(page) {
-      params = { ...params, page }
-      console.log(params)
-      readData()
-      return false
-    }
 
     function resetData() {
       document.getElementById('form-search').reset()
       readData()
     }
+
+    document.getElementById("form-users").addEventListener("submit", function (event) {
+      event.preventDefault()
+      saveData()
+    });
 
 
     document.getElementById('form-search').addEventListener('submit', (event) => {
@@ -400,8 +401,11 @@
       const endDate = document.getElementById('searchEndDate').value
       const boolean = document.getElementById('searchBoolean').value
       params = { ...params, string, integer, float, startDate, endDate, boolean, page }
+      console.log(params)
       readData()
     })
+
+
     function sortTableByColumn(table, column, asc = true) {
       const dirModifier = asc ? 1 : -1;
       const tBody = table.tBodies[0];

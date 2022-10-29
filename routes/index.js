@@ -20,33 +20,33 @@ module.exports = function (db) {
 
       sortMongo[sortBy] = sortMode == "asc" ? 1 : -1;
 
-      if (req.query.string && req.query.stringCheck == "on") {
-        wheres["strings"] = new RegExp(`${req.query.string}`, "i");
+      if (req.query.string) {
+        wheres["strings"] = new RegExp(`${req.query.string}`, 'i')
       }
 
-      if (req.query.integer && req.query.integerCheck == "on") {
-        wheres["integers"] = parseInt(req.query.integer);
+      if (req.query.integer) {
+        wheres["integers"] = parseInt(req.query.integer)
       }
 
-      if (req.query.float && req.query.floatCheck == "on") {
-        wheres["floats"] = JSON.parse(req.query.float);
+      if (req.query.float) {
+        wheres["floats"] = JSON.parse(req.query.float)
       }
 
-      if (req.query.dateCheck == "on") {
-        if (req.query.startDate != "" && req.query.endDate != "") {
-          wheres["dates"] = {
-            $gte: new Date(`${req.query.startDate}`),
-            $lte: new Date(`${req.query.endDate}`),
-          };
-        } else if (req.query.startDate) {
-          wheres["dates"] = { $gte: new Date(`${req.query.startDate}`) };
-        } else if (req.query.endDate) {
-          wheres["dates"] = { $lte: new Date(`${req.query.endDate}`) };
+
+      if (req.query.startDate && req.query.endDate) {
+        wheres["dates"] = {
+          $gte: new Date(`${req.query.startDate}`),
+          $lte: new Date(`${req.query.endDate}`)
         }
+      } else if (req.query.startDate) {
+        wheres["dates"] = { $gte: new Date(`${req.query.startDate}`) }
+      } else if (req.query.endDate) {
+        wheres["dates"] = { $lte: new Date(`${req.query.endDate}`) }
       }
 
-      if (req.query.boolean && req.query.booleanCheck == "on") {
-        wheres["booleans"] = JSON.parse(req.query.boolean);
+
+      if (req.query.boolean) {
+        wheres["booleans"] = (req.query.boolean)
       }
 
       const result = await db.collection("users").find(wheres).toArray()
@@ -57,7 +57,8 @@ module.exports = function (db) {
         success: true,
         data,
         pages,
-        limit
+        limit,
+        offset
       })
     } catch (err) {
       res.json(err, { success: false })
